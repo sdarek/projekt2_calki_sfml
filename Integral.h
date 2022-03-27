@@ -6,8 +6,10 @@
 #include <SFML/Network.hpp>
 #include <math.h>
 
-#define WINDOW_X 1280
-#define WINDOW_Y 720
+#define WINDOW_X 1600
+#define WINDOW_Y 900
+#define DRAWING_PRECISION 1.0 //smaller - more precision
+#define AXES_PIXEL_PER_UNIT 10.0	
 
 /*
 	Class that is used for everything related to integrals
@@ -22,20 +24,30 @@ class Integral
 		sf::RenderWindow* window;
 		sf::VideoMode videoMode;
 		sf::Event e;
+		sf::View view;
 
 		//App objects
-		sf::VertexArray axes;
-		sf::VertexArray fun1;
+		sf::VertexArray axes;	//array of vertex that contains our axes
 
-		//Integral functions 
-		double f4(double x);
+		//Structure which contains function graph and pointer to the function itself
+		struct fx_struct{
+			sf::VertexArray fun;	//array of vertex that contains points of graph wchich are connected by sf::Stri
+			double (*fx)(double) = nullptr;
+			void initFun();
+		};
+
+		fx_struct fun1;
+		fx_struct fun2;
+		fx_struct fun3;
+		fx_struct fun4;
+		fx_struct* akt_fun;
 
 		//Private functions
 		void initVariables();
 		void initWindow();
+		void initView();
 		void initGraph();
 		void initAxes();
-		void initFun1();
 
 	public:
 		//Constructors / Destructors
