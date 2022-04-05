@@ -171,7 +171,6 @@ void Integral::render()
 	*/
 	this->window->clear(sf::Color(50, 50, 50, 255));
 
-
 	this->window->setView(this->view);
 
 	//Draw app objects
