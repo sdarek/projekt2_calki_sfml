@@ -25,7 +25,7 @@ double f4(double x)
 
 
 
-void Integral::fx_struct::initFun()
+void Integral::fx_struct::drawFun(double multiplier, int scale)
 {
 	/*	This function initializes our fx_struct
 	*	-first array of graph points is cleared
@@ -33,13 +33,13 @@ void Integral::fx_struct::initFun()
 	*	-ok the most important part: to the array of points are adding points which are coordinates our function 
 	*			-x from an i=0.0, because 0 means the left edge of our window
 	*			-y from window_y/2 - .... because i want it in the middle
-	*								 .... -> ((i / axes_pixel_per_unit - j / axes_..) * axes_..)  because one unit is every 10 (defined by axes...) pixels. 
+	*								 .... -> ((i / scale - j / scale) * scale)  because one unit is every 'value in scale' pixels. 
 	*/
 	this->fun.clear();
 	this->fun.setPrimitiveType(sf::PrimitiveType::LinesStrip);
-	for (double i = 0.0, j = WINDOW_X / 2; i < WINDOW_X; i += DRAWING_PRECISION)
+	for (double i = 0.0, j = CENTER_X; i < WINDOW_X; i += DRAWING_PRECISION)
 	{
-		this->fun.append(sf::Vector2f(i, WINDOW_Y / 2 - this->fx(i / AXES_PIXEL_PER_UNIT - j / AXES_PIXEL_PER_UNIT) * AXES_PIXEL_PER_UNIT));
+		this->fun.append(sf::Vertex(sf::Vector2f(i, CENTER_Y - this->fx((i - j) / scale * multiplier) * scale / multiplier), FUNCTION_COLOR));
 	}
 }
 
@@ -49,6 +49,14 @@ void Integral::initVariables()
 {
 	this->window = nullptr;
 	this->akt_fun = &fun1;
+	fun1.fx = f1;
+	fun2.fx = f2;
+	fun3.fx = f3;
+	fun4.fx = f4;
+	this->graph_scale = DEFAULT_GRAPH_SCALE;
+	this->graph_scale_multiplier = 1;
+
+	if (!this->font.loadFromFile("Fonts/times.ttf")) std::cout << "Error 195487254 couldn't load font\n";
 }
 
 void Integral::initWindow()
@@ -66,39 +74,83 @@ void Integral::initView()
 	this->view.setCenter(sf::Vector2f(WINDOW_X / 2, WINDOW_Y / 2));
 }
 
-void Integral::initGraph()
+void Integral::initFont()
 {
-	this->initAxes();
-	fun1.fx = f1;
-	fun1.initFun();
-	fun2.fx = f2;
-	fun2.initFun();
-	fun3.fx = f3;
-	fun3.initFun();
-	fun4.fx = f4;
-	fun4.initFun();
+	int suma = 0;
+	for (int i = 0; i < WINDOW_X; i += (DEFAULT_GRAPH_SCALE / 2 + 1), suma++);
+	for (int i = 0; i < WINDOW_Y; i += (DEFAULT_GRAPH_SCALE / 2 + 1), suma++);
+
+	//sf::Text* textt = new sf::Text("", this->font, 12U)[suma];
+
 }
 
-void Integral::initAxes()
+void Integral::drawGraph()
+{
+	this->drawAxes();
+	fun1.drawFun(this->graph_scale_multiplier, this->graph_scale);
+	fun2.drawFun(this->graph_scale_multiplier, this->graph_scale);
+	fun3.drawFun(this->graph_scale_multiplier, this->graph_scale);
+	fun4.drawFun(this->graph_scale_multiplier, this->graph_scale);
+}
+void Integral::drawAxes()
 {
 	this->axes.clear();
+	this->text.clear();
 	this->axes.setPrimitiveType(sf::PrimitiveType::Lines);
-	this->axes.append(sf::Vector2f(0, WINDOW_Y / 2));
-	this->axes.append(sf::Vector2f(WINDOW_X, WINDOW_Y / 2));
-	this->axes.append(sf::Vector2f(WINDOW_X / 2, 0));
-	this->axes.append(sf::Vector2f(WINDOW_X / 2, WINDOW_Y));
-	for (int i = 0; i < WINDOW_X; i += AXES_PIXEL_PER_UNIT)
+	this->axes.append(sf::Vertex(sf::Vector2f(0, CENTER_Y), AXES_COLOR));
+	this->axes.append(sf::Vertex(sf::Vector2f(WINDOW_X, CENTER_Y), AXES_COLOR));
+	this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X, 0), AXES_COLOR));
+	this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X, WINDOW_Y), AXES_COLOR));
+
+	for (int i = CENTER_X + this->graph_scale, j = 1; i < WINDOW_X; i += this->graph_scale, j++)
 	{
-		this->axes.append(sf::Vector2f(i, WINDOW_Y / 2 - 4));
-		this->axes.append(sf::Vector2f(i, WINDOW_Y / 2 + 4));
+		//drawing lines on axis X
+		this->axes.append(sf::Vertex(sf::Vector2f(i, CENTER_Y - DUPA), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(i, CENTER_Y + DUPA), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(WINDOW_X - i, CENTER_Y - DUPA), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(WINDOW_X - i, CENTER_Y + DUPA), AXES_COLOR));
+		//adding text above the axis X
+		int one_x_point = this->graph_scale_multiplier * j;
+		std::string axis_point = std::to_string(one_x_point);
+		std::string axis_point2 = "." + std::to_string((int)((this->graph_scale_multiplier * j - one_x_point) * 100));
+		if ((j) % LETTER_SPACING == 0 || j == 1)
+		{
+			this->text.push_back(sf::Text(axis_point, this->font, 12U));
+			if (this->graph_scale_multiplier < 1) this->text.back().setString(this->text.back().getString() + axis_point2);
+			this->text.back().setOrigin(sf::Vector2f(this->text.back().getGlobalBounds().width / 2, this->text.back().getGlobalBounds().height / 2));
+			this->text.back().setPosition(sf::Vector2f(i, CENTER_Y - DUPA - 15));
+
+			this->text.push_back(sf::Text("-" + axis_point, this->font, 12U));
+			if (this->graph_scale_multiplier < 1) this->text.back().setString(this->text.back().getString() + axis_point2);
+			this->text.back().setOrigin(sf::Vector2f(this->text.back().getGlobalBounds().width / 2, this->text.back().getGlobalBounds().height / 2));
+			this->text.back().setPosition(sf::Vector2f(WINDOW_X - i, CENTER_Y - DUPA - 15));
+		}
 	}
-	for (int i = 0; i < WINDOW_Y; i += AXES_PIXEL_PER_UNIT)
+	for (int i = CENTER_Y + this->graph_scale, j = 1; i < WINDOW_Y; i += this->graph_scale, j++)
 	{
-		this->axes.append(sf::Vector2f(WINDOW_X / 2 - 4, i));
-		this->axes.append(sf::Vector2f(WINDOW_X / 2 + 4, i));
+		//drawing lines on axis Y
+		this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X - DUPA, i), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X + DUPA, i), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X - DUPA, WINDOW_Y - i), AXES_COLOR));
+		this->axes.append(sf::Vertex(sf::Vector2f(CENTER_X + DUPA, WINDOW_Y - i), AXES_COLOR));
+		//adding text next to the axis Y
+		int one_x_point = this->graph_scale_multiplier * j;
+		std::string axis_point = std::to_string(one_x_point);
+		std::string axis_point2 = "." + std::to_string((int)((this->graph_scale_multiplier * j - one_x_point) * 100));
+		if ((j) % LETTER_SPACING == 0 || j == 1)
+		{
+			this->text.push_back(sf::Text("-" + axis_point, this->font, 12U));
+			if (this->graph_scale_multiplier < 1) this->text.back().setString(this->text.back().getString() + axis_point2);
+			this->text.back().setOrigin(sf::Vector2f(this->text.back().getGlobalBounds().width / 2, this->text.back().getGlobalBounds().height / 2));
+			this->text.back().setPosition(sf::Vector2f(CENTER_X + DUPA + 10, i));
+
+			this->text.push_back(sf::Text(axis_point, this->font, 12U));
+			if (this->graph_scale_multiplier < 1) this->text.back().setString(this->text.back().getString() + axis_point2);
+			this->text.back().setOrigin(sf::Vector2f(this->text.back().getGlobalBounds().width / 2, this->text.back().getGlobalBounds().height / 2));
+			this->text.back().setPosition(sf::Vector2f(CENTER_X + DUPA + 10, WINDOW_Y - i));
+		}
 	}
 }
-
 //Constructors / Destructors
 
 Integral::Integral()
@@ -106,7 +158,8 @@ Integral::Integral()
 	this->initVariables();
 	this->initWindow();
 	this->initView();
-	this->initGraph();
+	this->initFont();
+	this->drawGraph();
 }
 
 Integral::~Integral()
@@ -114,6 +167,7 @@ Integral::~Integral()
 	delete this->window;
 
 }
+
 
 //Accessors
 
@@ -141,11 +195,37 @@ void Integral::poolEvents()
 			if (this->e.key.code == sf::Keyboard::Escape) this->window->close();
 			if (this->e.key.code == sf::Keyboard::Up)
 			{
-				this->view.zoom(0.99);
+				if (this->graph_scale + 1 == DEFAULT_GRAPH_SCALE * 2 && this->graph_scale_multiplier < 0.5f) break;
+				this->graph_scale++;
+				if (this->graph_scale >= DEFAULT_GRAPH_SCALE * 2)
+				{
+					this->graph_scale_multiplier /= 2.;
+					this->graph_scale -= DEFAULT_GRAPH_SCALE;
+				}
+				std::cout << "graph scale: " << this->graph_scale << std::endl;
+				std::cout << "graph multi: " << this->graph_scale_multiplier << std::endl;
+				this->drawGraph();
+				this->drawAxes();
 			}
 			if (this->e.key.code == sf::Keyboard::Down)
 			{
-				if(this->view.getSize().x < WINDOW_X) this->view.zoom(1.01);
+				this->graph_scale--;
+				if (this->graph_scale < DEFAULT_GRAPH_SCALE)
+				{
+					this->graph_scale_multiplier *= 2;
+					this->graph_scale += DEFAULT_GRAPH_SCALE;
+				}
+				//std::cout << this->graph_scale << std::endl;
+				std::cout << this->graph_scale_multiplier << std::endl;
+				this->drawGraph();
+				this->drawAxes();
+			}
+			if (this->e.key.code == sf::Keyboard::R)
+			{
+				this->graph_scale = DEFAULT_GRAPH_SCALE;
+				this->graph_scale_multiplier = 1;
+				this->drawGraph();
+				this->drawAxes();
 			}
 			if (this->e.key.code == sf::Keyboard::Left)
 			{
@@ -171,10 +251,9 @@ void Integral::render()
 	*/
 	this->window->clear(sf::Color(50, 50, 50, 255));
 
-	this->window->setView(this->view);
-
 	//Draw app objects
 	this->window->draw(this->axes);
+	for(int i = 0; i < this->text.size(); i++) this->window->draw(this->text[i]);
 	this->window->draw(akt_fun->fun);
 
 	this->window->display();

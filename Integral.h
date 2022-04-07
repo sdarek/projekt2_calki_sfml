@@ -5,11 +5,20 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 #include <math.h>
+#include <iostream>
+#include <vector>
+#include <string>
 
 #define WINDOW_X 1600
 #define WINDOW_Y 900
+#define CENTER_X WINDOW_X/2
+#define CENTER_Y WINDOW_Y/2
+#define DUPA 5 //dlugosc tych frendzlow na osiach
+#define AXES_COLOR sf::Color(255, 255, 255, 255)
+#define FUNCTION_COLOR sf::Color(0, 0, 255, 255)
 #define DRAWING_PRECISION 1.0 //smaller - more precision
-#define AXES_PIXEL_PER_UNIT 10.0	
+#define DEFAULT_GRAPH_SCALE 40	
+#define LETTER_SPACING 4
 
 /*
 	Class that is used for everything related to integrals
@@ -20,11 +29,19 @@ class Integral
 {
 	private:
 		//Variables
+		
+		int graph_scale;
+		double graph_scale_multiplier;
+
 		//Window
 		sf::RenderWindow* window;
 		sf::VideoMode videoMode;
 		sf::Event e;
 		sf::View view;
+
+		//Font
+		sf::Font font;
+		std::vector <sf::Text> text;
 
 		//App objects
 		sf::VertexArray axes;	//array of vertex that contains our axes
@@ -33,7 +50,7 @@ class Integral
 		struct fx_struct{
 			sf::VertexArray fun;	//array of vertex that contains points of graph wchich are connected by sf::Stri
 			double (*fx)(double) = nullptr;
-			void initFun();
+			void drawFun(double multiplier, int scale);
 		};
 
 		fx_struct fun1;
@@ -46,8 +63,9 @@ class Integral
 		void initVariables();
 		void initWindow();
 		void initView();
-		void initGraph();
-		void initAxes();
+		void initFont();
+		void drawGraph();
+		void drawAxes();
 
 	public:
 		//Constructors / Destructors

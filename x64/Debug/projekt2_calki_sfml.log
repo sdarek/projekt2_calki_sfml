@@ -1,36 +1,76 @@
 ﻿  Integral.cpp
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(42,49): warning C4244: "argument": konwersja z "double" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(42,56): warning C4244: "argument": konwersja z "double" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(42,33): warning C4244: "argument": konwersja z "double" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(42,44): warning C4244: "argument": konwersja z "double" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(90,37): warning C4244: "+=": konwersja z "double" do "int", możliwa utrata danych
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(92,34): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(108,45): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(93,34): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(109,45): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(95,37): warning C4244: "+=": konwersja z "double" do "int", możliwa utrata danych
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(97,52): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(110,54): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(98,52): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(111,54): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(144,25): warning C4305: "argument": obcięcie z "double" do "float"
-C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(148,63): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(113,19): warning C4244: "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(121,47): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(126,56): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(132,62): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(133,62): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(134,71): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(135,71): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(137,19): warning C4244: "inicjowanie": konwersja z "double" do "int", możliwa utrata danych
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(145,69): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+C:\Users\darek\source\repos\projekt2_calki_sfml\projekt2_calki_sfml\Integral.cpp(150,78): warning C4244: "argument": konwersja z "int" do "T", możliwa utrata danych
+          with
+          [
+              T=float
+          ]
+  main.cpp
+  Generowanie kodu...
   projekt2_calki_sfml.vcxproj -> C:\Users\darek\source\repos\projekt2_calki_sfml\x64\Debug\projekt2_calki_sfml.exe
